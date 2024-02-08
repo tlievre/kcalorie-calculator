@@ -1,4 +1,11 @@
-def bmr_calculator(weight, size, age, activity, model = "H&B", gender = "male"):
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+@app.get("/bmr_calculator")
+def bmr_calculator(weight : float, size : float, age : int,
+                   activity : float, model : str | None = "H&B", gender : str | None = "male"):
     """Basal metabolysm rate (BMR), based on Harris and Benedict formula.
 
     Args:
@@ -34,4 +41,4 @@ def bmr_calculator(weight, size, age, activity, model = "H&B", gender = "male"):
         bmr = activity * (c[0] * weight**(c[1]) * size**(c[2]) * age**(c[3]))
     else:
         raise('Wrong method name' + model)
-    return bmr
+    return {"bmr": bmr} 
